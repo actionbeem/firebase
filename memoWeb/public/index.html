@@ -77,7 +77,7 @@
         auth = firebase.auth();
         console.log(auth)
         database = firebase.database();
-        console.log(database);
+        console.log('db :', database);
         var authProvider = new firebase.auth.GoogleAuthProvider();
         
         auth.onAuthStateChanged(function(user){
