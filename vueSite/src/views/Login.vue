@@ -4,6 +4,7 @@
       <input type="text" id="email" placeholder="email" v-model="email">
       <input type="password" id="password" placeholder="password" v-model="password">
       <input class="btn-login" type="submit" @click.prevent="loginSubmit" value="Login">
+      <input class="btn-signup" type="submit" @click.prevent="signupSubmit" value="Sign Up">
       <button class="btn-gl-login" @click.prevent="googleLogin">
         <img src="../assets/images/gl_logo.png" alt="구글아이디 로그인 버튼 이미지">
         <span>Sign in with Google</span>
@@ -26,6 +27,9 @@ export default {
     }
   },
   methods: {
+    signupSubmit(){
+
+    },
     loginSubmit(){
       var self = this;
       if (this.loginExceptionHandler()) return true;
@@ -89,7 +93,8 @@ export default {
 .login-form form button { width:100%; font-size:15px; padding:15px; box-sizing:border-box; margin-bottom:10px; border-radius:3px;}
 .login-form #email,
 .login-form #password { background-color:#f6f6f6; }
-.login-form .btn-login { background-color:#54c9ca; color:#fff;  margin-top:30px; cursor:pointer; }
+.login-form .btn-login { background-color:#54c9ca; color:#fff;  margin-top:20px; cursor:pointer; }
+.login-form .btn-signup { border:1px solid #54c9ca; color:#54c9ca; cursor:pointer; margin-bottom:30px;  }
 .login-form .btn-gl-login { padding:10px 0; }
 .login-form .btn-gl-login img { width:25px; vertical-align:middle; }
 .login-form .btn-gl-login span { vertical-align:middle; margin-left:5px; font-size:14px;}

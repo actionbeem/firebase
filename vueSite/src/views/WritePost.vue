@@ -18,6 +18,23 @@
         <input class="sub" type="text" placeholder="원본 링크 첨부" v-model="link">
         <textarea class="txtarea" v-model="text"></textarea>
 
+        <!-- 네이버 smart editor 
+        <textarea name="ir1" id="ir1" rows="10" cols="100" value="스마트 에디터"></textarea>
+        <input type="button" onclick="showHTML()" value="본문 내용 가져오기">
+        -->
+
+        <div class="upload-wrap clear">
+          <div class="btn-wrap">
+            <label for="btn-upload">썸네일 첨부</label>
+            <input type="file" id="btn-upload" @change="onFileChange">
+          </div>
+          <div class="img-wrap">
+            <img class="img-preview" :src="thumbImg" v-model="thumbImg"/>
+            <!-- <button @click="removeImage">Remove image</button> -->
+          </div>
+        </div>
+
+
         <div class="clear">
           <button v-if="edit" class="btn-submit" @click.prevent="editPost">
             <span>수정 완료</span>
@@ -37,8 +54,9 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
+import $ from 'jquery'
 
-let database, userRef, userUid, userKey;
+let database, userRef, userUid, userKey, today;
 
 export default {
   data() {
@@ -46,29 +64,72 @@ export default {
       title: "",
       link: "",
       text: "",
+      writeDate: "",
+      thumbImg: "",
       edit: false,
     }
   },
   methods:{
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.thumbImg = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function (e) {
+      this.thumbImg = '';
+    },
+
     writePost(){
+      this.getDate();
       userRef.push({
         title: this.title,
         link: this.link,
         text: this.text,
-        // writeDate: Date().now(),
+        writeDate: this.writeDate,
+        thumbImg: this.thumbImg
       })
 
       this.$router.push('/home')
     },
     editPost(){
+      this.getDate();
       userRef.update({
         title: this.title,
         link: this.link,
         text: this.text,
+        writeDate: this.writeDate,
+        thumbImg: this.thumbImg
       })
 
       this.$router.push('/home')
     },
+    getDate(){
+      let today = new Date();
+      let dd = today.getDate();
+      let mm = today.getMonth()+1; //January is 0!
+      let yyyy = today.getFullYear();
+
+      if(dd<10) {
+          dd='0'+dd
+      } 
+      if(mm<10) {
+          mm='0'+mm
+      } 
+
+      today = yyyy+'-'+mm+'-'+dd;
+      this.writeDate = today;
+    }
   },
   created(){
     database = firebase.database();
@@ -84,12 +145,28 @@ export default {
         self.title = snapshot.val().title;
         self.link = snapshot.val().link;
         self.text = snapshot.val().text;
+        self.thumbImg = snapshot.val().thumbImg;
       });
-
     }
-  }
+
+
+  },
+  mounted(){
+    /* 네이버 smart editor
+    var oEditors = [];
+    
+    nhn.husky.EZCreator.createInIFrame({
+      oAppRef: oEditors,
+      elPlaceHolder: "ir1",
+      sSkinURI: "./smarteditor/SmartEditor2Skin.html",
+      fCreator: "createSEditor2"
+    });
+    */
+  },
 }
 </script>
+
+
 
 <style scoped>
 .write-post { background-color:#eee; padding:50px 0;}
@@ -99,7 +176,15 @@ export default {
 .write-post .form { background-color:#fff; padding:20px;  }
 .write-post .form .tit { padding:15px; font-size:20px; width:100%; box-sizing:border-box; border:0; border-bottom:1px solid #e0e0e0; margin-bottom:10px; }
 .write-post .form .sub { width:100%; font-size:15px; padding:12px 15px; border:0; border-bottom:1px solid #e0e0e0; box-sizing:border-box; margin-bottom:50px;}
-.write-post .form .txtarea { width:100%; height:300px; border:0; font-size:14px; background-color:#f6f6f6; padding:15px; box-sizing:border-box; border-radius:4px;  }
+.write-post .form .txtarea { width:100%; height:300px; border:0; font-size:14px; background-color:#f6f6f6; padding:15px; box-sizing:border-box; border-radius:4px; margin-bottom:30px; }
 .write-post .form .btn-submit { float:right; width:160px; line-height:48px; background-color:#000; color:#fff; text-align:center; margin-top:20px;  }
 .write-post .form .btn-submit span { font-size:16px; }
+
+.upload-wrap .btn-wrap { width:200px; float:left; }
+.upload-wrap .img-wrap { width:400px; float:left; }
+.upload-wrap .btn-wrap label { display:inline-block; width:150px; text-align:center; line-height:44px; font-size:15px; background-color:#eee; color:#777; cursor:pointer; }
+.upload-wrap .btn-wrap input { opacity:0; }
+.upload-wrap .img-preview { width:100px; }
+
+.test-bg { width: 100px; height:100px; background-color:#eee; background-size:cover; }
 </style>

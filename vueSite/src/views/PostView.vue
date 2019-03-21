@@ -1,7 +1,7 @@
 <template>
   <div class="post-view">
     <h1 class="tit">{{ onePost.title }}</h1>
-    <p class="date">date : {{ onePost.writeDate }} </p>
+    <p class="date">작성일 : {{ onePost.writeDate }} </p>
     <div class="inner">
       <span>원본 링크 : </span><a class="link" :href="onePost.link" target="blank">{{ onePost.link }}</a>
       <p class="text">{{ onePost.text }}</p>
