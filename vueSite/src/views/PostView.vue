@@ -67,8 +67,8 @@ export default {
 .post-view .link { display:inline-block; font-size:16px; color:cornflowerblue; margin-bottom:15px;  }
 .post-view .text { font-size:14px; }
 .post-view .btn-wrap { margin-top:30px; }
-.post-view .btn-wrap button { float:right; display:inline-block; width:100px; line-height:40px; text-align:center; border-radius:3px; margin-left:10px; }
+.post-view .btn-wrap button { float:right; display:inline-block; width:100px; line-height:40px; text-align:center; margin-left:10px; }
 .post-view .btn-wrap button span { font-size:16px; }
-.post-view .btn-wrap button.btn-delete { border:1px solid #aaa; background-color:#aaa; color:#fff; }
-.post-view .btn-wrap button.btn-edit { border:1px solid #aaa; background-color:#fff; color:#aaa; }
+.post-view .btn-wrap button.btn-delete { border:1px solid #555; background-color:#555; color:#fff; }
+.post-view .btn-wrap button.btn-edit { border:1px solid #555; background-color:#fff; color:#555; }
 </style>

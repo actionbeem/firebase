@@ -27,7 +27,12 @@ export default {
       this.$router.push('/login')
     },
     writePost(){
-      this.$router.push('/write')
+      if(this.$store.state.currentUser){
+        this.$router.push('/write')
+      }else{
+        alert('Please Login')
+        this.$router.push('/login')
+      }
     }
   }
 }
