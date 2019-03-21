@@ -4,6 +4,7 @@ import WritePost from '../views/WritePost.vue'
 import Login from '../views/Login.vue'
 import PostList from '../views/PostList.vue'
 import PostView from '../views/PostView.vue'
+import Edit from '../views/Edit.vue'
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,7 @@ export const router = new VueRouter({
       component: Login
     },
     {
+      name: 'write',
       path: '/write',
       component: WritePost,
       props: true

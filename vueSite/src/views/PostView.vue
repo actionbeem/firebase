@@ -12,7 +12,8 @@
       </button>
       <button class="btn-edit" @click="editPost">
         <span>수정</span>
-      </button>
+      </button>      
+
     </div>
   </div>
 </template>
@@ -37,7 +38,7 @@ export default {
       this.$router.push('/home')
     },
     editPost(){
-      this.$router.push({ path: '/write' , params: { guid : 'editPost!'}, props: true })
+      this.$router.push({ name:"write" , params: { "paramUid" : paramUid, "paramKey" : paramKey } })
     }
   },
   created(){
@@ -45,10 +46,10 @@ export default {
     paramUid = this.$route.params.uid;
     paramKey = this.$route.params.key;
     userRef = database.ref(`users/${paramUid}/${paramKey}`)
-    let vm = this;
+    let self = this;
 
     userRef.on('value',function(snapshot){
-      vm.onePost = snapshot.val();
+      self.onePost = snapshot.val();
     })
 
     if( paramUid === this.$store.state.currentUserUid ) {

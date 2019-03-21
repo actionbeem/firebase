@@ -31,12 +31,11 @@ export default {
     }
   },
   created(){
-    console.log(Date.now())
     const userDB = firebase.database().ref('/users');
-    const vm = this;
+    const self = this;
     userDB.on('value',function(snapshot){
       let users = snapshot.val();
-      vm.userDataList.push(users)
+      self.userDataList.push(users)
     })
   },
 }

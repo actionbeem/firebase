@@ -1,28 +1,17 @@
 <template>
   <div class="write-post">
     <div class="inner-wrap">
-      <template v-if="edit">
-        <section class="top">
-          <h1 class="tit">글 수정</h1>
-          <h2 class="sub">글을 수정해주세요.</h2>
-        </section>
-      </template>
-      <template v-else>
-        <section class="top">
-          <h1 class="tit">새로운 글 쓰기</h1>
-          <h2 class="sub">자유롭게 글을 작성해주세요.</h2>
-        </section>
-      </template>
+      <section class="top">
+        <h1 class="tit">새로운 글 쓰기</h1>
+        <h2 class="sub">자유롭게 글을 작성해주세요.</h2>
+      </section>
       <section class="form">
         <input class="tit" type="text" placeholder="제목" v-model="title">
         <input class="sub" type="text" placeholder="원본 링크 첨부" v-model="link">
         <textarea class="txtarea" v-model="text"></textarea>
 
         <div class="clear">
-          <button v-if="edit" class="btn-submit" @click.prevent="editPost">
-            <span>수정 완료</span>
-          </button>
-          <button v-else class="btn-submit" @click.prevent="writePost">
+          <button class="btn-submit" @click.prevent="editPostSubmit">
             <span>확인</span>
           </button>
         </div>
@@ -38,19 +27,19 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 
-let database, userRef, userUid, userKey;
-
 export default {
   data() {
     return {
       title: "",
       link: "",
       text: "",
-      edit: false,
     }
   },
   methods:{
-    writePost(){
+    editPostSubmit(){
+      let database = firebase.database();
+      let userRef = database.ref('users/' + this.$store.state.currentUserUid )
+
       userRef.push({
         title: this.title,
         link: this.link,
@@ -59,34 +48,14 @@ export default {
       })
 
       this.$router.push('/home')
-    },
-    editPost(){
-      userRef.update({
-        title: this.title,
-        link: this.link,
-        text: this.text,
-      })
 
-      this.$router.push('/home')
+      userRef.on('value',function(data){
+        console.log(data.val())
+      })
     },
   },
   created(){
-    database = firebase.database();
-    userRef = database.ref('users/' + this.$store.state.currentUserUid )
-    userUid = this.$route.params.paramUid;
-    userKey = this.$route.params.paramKey;
-    let self = this;
-
-    if(userUid){
-      this.edit = true;
-      userRef = database.ref(`users/${userUid}/${userKey}`)
-      userRef.once('value').then(function(snapshot){
-        self.title = snapshot.val().title;
-        self.link = snapshot.val().link;
-        self.text = snapshot.val().text;
-      });
-
-    }
+    console.log('hola')
   }
 }
 </script>

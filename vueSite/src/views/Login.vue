@@ -42,43 +42,28 @@ export default {
         self.$store.commit('setUserInfo', user)
         self.$store.commit('setUserUid', user.user.uid )
         self.clearForm();
-        // self.authRouter();
         self.$router.push({path : '/home'});
-        // self.toastMessage(user.email + " just logged in");
       });
     },
     googleLogin(){      
       let auth = firebase.auth();
       let authProvider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(authProvider)
-      let vm = this;
+      let self = this;
+
+      auth.signInWithPopup(authProvider).then(function(){
+        self.$router.push('/home')
+      })      
 
       auth.onAuthStateChanged(function(user){
         if(user){
-          console.log('success');
-          vm.$store.commit('setUserInfo', user)
-          vm.$store.commit('setUserUid', user.uid )
-          // vm.getMemoList();
+          self.$store.commit('setUserInfo', user)
+          self.$store.commit('setUserUid', user.uid )
         } else {
           console.log('error')
           auth.signInWithPopup(authProvider)
         }  
-      });    
+      });
     },
-    // getMemoList(){
-    //   let database = firebase.database();
-    //   let memoRef = database.ref('users/' + this.userInfo.uid)
-
-    //   memoRef.set({
-    //     name: this.name,
-    //     age: this.age
-    //   })
-
-    //   memoRef.on('value',function(data){
-    //     console.log(data.val())
-    //   })
-    //   memoRef.on('child_changed', this.onChildChanged )
-    // },
     loginExceptionHandler() {
       if ( this.email === "" || this.password === "") {
         alert("enter the email and password");
@@ -89,9 +74,6 @@ export default {
     clearForm(){
       this.email = "";
       this.password = "";
-    },
-    createData(){
-
     },
     writePost(){
       this.$router.push('/write')
