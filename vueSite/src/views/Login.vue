@@ -28,7 +28,11 @@ export default {
   },
   methods: {
     signupSubmit(){
-
+      return firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(function(){
+        alert('회원가입 완료! 로그인 해주세요.')
+      }).catch(function(){
+        console.log(error)
+      });
     },
     loginSubmit(){
       var self = this;
