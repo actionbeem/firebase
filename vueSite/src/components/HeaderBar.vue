@@ -19,8 +19,6 @@
 </template>
 
 <script>
-
-
 export default {
   methods: {
     login(){

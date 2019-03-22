@@ -18,10 +18,8 @@
         <input class="sub" type="text" placeholder="원본 링크 첨부" v-model="link">
         <textarea class="txtarea" v-model="text"></textarea>
 
-        <!-- 네이버 smart editor 
-        <textarea name="ir1" id="ir1" rows="10" cols="100" value="스마트 에디터"></textarea>
-        <input type="button" onclick="showHTML()" value="본문 내용 가져오기">
-        -->
+        <textarea name="smartEditor" id="smartEditor" ref="smartEditor" rows="10" cols="100" value="스마트 에디터"></textarea>
+        <input ref="getEditorValue" @click="getEditorValue" class="btn-se" type="button" value="본문 내용 가져오기">
 
         <div class="upload-wrap clear">
           <div class="btn-wrap">
@@ -57,6 +55,7 @@ import "firebase/database";
 import $ from 'jquery'
 
 let database, userRef, userUid, userKey, today;
+let oEditors = [];
 
 export default {
   data() {
@@ -66,50 +65,53 @@ export default {
       text: "",
       writeDate: "",
       thumbImg: "",
+      editorValue: "",
       edit: false,
     }
   },
   methods:{
     onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
+      let files = e.target.files || e.dataTransfer.files;
       if (!files.length)
         return;
       this.createImage(files[0]);
     },
     createImage(file) {
-      var image = new Image();
-      var reader = new FileReader();
-      var vm = this;
+      const image = new Image();
+      const reader = new FileReader();
+      const vm = this;
 
-      reader.onload = (e) => {
-        vm.thumbImg = e.target.result;
-      };
+      reader.onload = e => vm.thumbImg = e.target.result;
       reader.readAsDataURL(file);
     },
-    removeImage: function (e) {
+    removeImage(e) {
       this.thumbImg = '';
     },
 
     writePost(){
       this.getDate();
+      this.getEditorValue();
       userRef.push({
         title: this.title,
         link: this.link,
         text: this.text,
         writeDate: this.writeDate,
-        thumbImg: this.thumbImg
+        thumbImg: this.thumbImg,
+        editorValue: this.editorValue,
       })
 
       this.$router.push('/home')
     },
     editPost(){
       this.getDate();
+      this.getEditorValue();
       userRef.update({
         title: this.title,
         link: this.link,
         text: this.text,
         writeDate: this.writeDate,
-        thumbImg: this.thumbImg
+        thumbImg: this.thumbImg,
+        editorValue: this.editorValue,
       })
 
       this.$router.push('/home')
@@ -120,15 +122,21 @@ export default {
       let mm = today.getMonth()+1; //January is 0!
       let yyyy = today.getFullYear();
 
-      if(dd<10) {
-          dd='0'+dd
+      if (dd < 10) {
+        dd='0'+dd
       } 
-      if(mm<10) {
-          mm='0'+mm
+      if (mm < 10) {
+        mm='0'+mm
       } 
 
       today = yyyy+'-'+mm+'-'+dd;
       this.writeDate = today;
+    },
+    getEditorValue(){
+      oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);  
+      let editorValue = this.$refs.smartEditor.value;
+
+      this.editorValue = editorValue;
     }
   },
   created(){
@@ -146,29 +154,24 @@ export default {
         self.link = snapshot.val().link;
         self.text = snapshot.val().text;
         self.thumbImg = snapshot.val().thumbImg;
+        self.editorValue = snapshot.val().editorValue;
       });
     }
-
-
   },
   mounted(){
-    /* 네이버 smart editor
-    var oEditors = [];
-    
     nhn.husky.EZCreator.createInIFrame({
       oAppRef: oEditors,
-      elPlaceHolder: "ir1",
+      elPlaceHolder: "smartEditor",
       sSkinURI: "./smarteditor/SmartEditor2Skin.html",
       fCreator: "createSEditor2"
     });
-    */
   },
 }
 </script>
 
 
 
-<style scoped>
+<style>
 .write-post { background-color:#eee; padding:50px 0;}
 .write-post .top { margin-bottom:50px;}
 .write-post .top .tit { font-size:30px; font-weight:normal; margin-bottom:6px; }
@@ -186,5 +189,6 @@ export default {
 .upload-wrap .btn-wrap input { opacity:0; }
 .upload-wrap .img-preview { width:100px; }
 
-.test-bg { width: 100px; height:100px; background-color:#eee; background-size:cover; }
+
+.btn-se { border:1px solid #e0e0e0; }
 </style>

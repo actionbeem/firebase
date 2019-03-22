@@ -4,7 +4,8 @@
     <p class="date">작성일 : {{ onePost.writeDate }} </p>
     <div class="inner">
       <span>원본 링크 : </span><a class="link" :href="onePost.link" target="blank">{{ onePost.link }}</a>
-      <p class="text">{{ onePost.text }}</p>
+      <p class="text" style="margin-bottom:20px;">{{ onePost.text }}</p>
+      <div class="text"><p v-html="onePost.editorValue"></p></div>
     </div>
     <div class="btn-wrap clear" v-if="btnEdit">
       <button class="btn-delete" @click="deletePost">
