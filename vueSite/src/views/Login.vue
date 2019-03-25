@@ -67,8 +67,8 @@ export default {
           self.$store.commit('setUserInfo', user)
           self.$store.commit('setUserUid', user.uid )
         } else {
-          console.log('error')
-          auth.signInWithPopup(authProvider)
+          console.log('logout')
+          // auth.signInWithPopup(authProvider)
         }  
       });
     },

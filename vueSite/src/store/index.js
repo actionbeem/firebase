@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     currentUser: null,
-    currentUserUid: "",
+    currentUserUid: null,
   },
   getters: {},
   actions: {},
@@ -16,6 +16,10 @@ export const store = new Vuex.Store({
     },
     setUserUid(state, userId){
       state.currentUserUid = userId
+    },
+    logOut(state){
+      state.currentUser = null;
+      state.currentUserUid = null;
     }
   },
 });

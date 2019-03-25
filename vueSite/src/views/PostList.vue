@@ -50,5 +50,9 @@ export default {
 .post-list li .tit { font-size:16px; margin:20px 0 10px; }
 /* .post-list li .txt { font-size:14px; height:36px; line-height:18px; overflow-y:hidden; text-overflow:ellipsis;  } */
 .post-list .sub-text { font-size:14px; height:36px; line-height:18px; overflow-y:hidden; text-overflow:ellipsis;  }
-.post-list .sub-text p { font-size:14px !important; line-height:19px !important; color:#aaa !important; font-weight:normal !important; margin-top:0 !important; }
+.post-list .sub-text p,
+.post-list .sub-text span,
+.post-list .sub-text p a,
+.post-list .sub-text span a
+ { font-size:14px !important; line-height:19px !important; color:#aaa !important; font-weight:normal !important; margin-top:0 !important; }
 </style>

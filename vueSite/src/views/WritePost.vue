@@ -1,7 +1,7 @@
 <template>
   <div class="write-post">
     <div class="inner-wrap">
-      <template v-if="edit">
+      <template v-if="editStatus">
         <section class="top">
           <h1 class="tit">글 수정</h1>
           <h2 class="sub">글을 수정해주세요.</h2>
@@ -33,7 +33,7 @@
 
 
         <div class="clear">
-          <button v-if="edit" class="btn-submit" @click.prevent="editPost">
+          <button v-if="editStatus" class="btn-submit" @click.prevent="editPost">
             <span>수정 완료</span>
           </button>
           <button v-else class="btn-submit" @click.prevent="writePost">
@@ -65,7 +65,7 @@ export default {
       writeDate: "",
       thumbImg: "",
       editorValue: "",
-      edit: false,
+      editStatus: false,
     }
   },
   methods:{
@@ -141,12 +141,13 @@ export default {
   created(){
     database = firebase.database();
     userRef = database.ref('users/' + this.$store.state.currentUserUid )
+    console.log(userRef)
     userUid = this.$route.params.paramUid;
     userKey = this.$route.params.paramKey;
     let self = this;
 
     if(userUid){
-      this.edit = true;
+      this.editStatus = true;
       userRef = database.ref(`users/${userUid}/${userKey}`)
       userRef.once('value').then(function(snapshot){
         self.title = snapshot.val().title;
