@@ -4,7 +4,7 @@
     <p class="date">작성일 : {{ onePost.writeDate }} </p>
     <div class="inner">
       <span>원본 링크 : </span><a class="link" :href="onePost.link" target="blank">{{ onePost.link }}</a>
-      <p class="text" style="margin-bottom:20px;">{{ onePost.text }}</p>
+      <!-- <p class="text" style="margin-bottom:20px;">{{ onePost.text }}</p> -->
       <div class="text"><p v-html="onePost.editorValue"></p></div>
     </div>
     <div class="btn-wrap clear" v-if="btnEdit">
@@ -63,6 +63,7 @@ export default {
 <style scoped>
 .post-view { width:1100px; margin:0 auto; }
 .post-view .inner {  padding:40px 30px; background-color:#fff; box-shadow:0 10px 15px rgba(0,0,0,0.05); }
+.post-view .inner span { font-size:16px; color:#333;}
 .post-view .tit { font-size:24px; margin:50px 0 10px; }
 .post-view .date { font-size:16px; color:#bbb; margin-bottom:30px; }
 .post-view .link { display:inline-block; font-size:16px; color:cornflowerblue; margin-bottom:15px;  }

@@ -8,7 +8,8 @@
               <!-- <p class="thumb"></p> -->
               <div class="thumbImg" :style="`background:url(${post.thumbImg}) no-repeat center; background-size:cover;`"></div>
               <h2 class="tit">{{ post.title }}</h2>
-              <p class="txt">{{ post.text }}</p>
+              <h2 class="sub-text" v-html="post.editorValue"></h2>
+              <!-- <p class="txt">{{ post.text }}</p> -->
             </router-link>
           </div>
         </li>
@@ -47,5 +48,7 @@ export default {
 .post-list li .thumb { height:180px; background-color:#333;} 
 .post-list li .thumbImg { width:100%; height:150px; } 
 .post-list li .tit { font-size:16px; margin:20px 0 10px; }
-.post-list li .txt { font-size:14px; height:36px; line-height:18px; overflow-y:hidden; text-overflow:ellipsis;  }
+/* .post-list li .txt { font-size:14px; height:36px; line-height:18px; overflow-y:hidden; text-overflow:ellipsis;  } */
+.post-list .sub-text { font-size:14px; height:36px; line-height:18px; overflow-y:hidden; text-overflow:ellipsis;  }
+.post-list .sub-text p { font-size:14px !important; line-height:19px !important; color:#aaa !important; font-weight:normal !important; margin-top:0 !important; }
 </style>

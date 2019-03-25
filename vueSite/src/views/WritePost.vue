@@ -16,10 +16,9 @@
       <section class="form">
         <input class="tit" type="text" placeholder="제목" v-model="title">
         <input class="sub" type="text" placeholder="원본 링크 첨부" v-model="link">
-        <textarea class="txtarea" v-model="text"></textarea>
+        <!-- <textarea class="txtarea" v-model="text"></textarea> -->
 
         <textarea name="smartEditor" id="smartEditor" ref="smartEditor" rows="10" cols="100" value="스마트 에디터"></textarea>
-        <input ref="getEditorValue" @click="getEditorValue" class="btn-se" type="button" value="본문 내용 가져오기">
 
         <div class="upload-wrap clear">
           <div class="btn-wrap">
@@ -62,7 +61,7 @@ export default {
     return {
       title: "",
       link: "",
-      text: "",
+      // text: "",
       writeDate: "",
       thumbImg: "",
       editorValue: "",
@@ -94,7 +93,7 @@ export default {
       userRef.push({
         title: this.title,
         link: this.link,
-        text: this.text,
+        // text: this.text,
         writeDate: this.writeDate,
         thumbImg: this.thumbImg,
         editorValue: this.editorValue,
@@ -108,7 +107,7 @@ export default {
       userRef.update({
         title: this.title,
         link: this.link,
-        text: this.text,
+        // text: this.text,
         writeDate: this.writeDate,
         thumbImg: this.thumbImg,
         editorValue: this.editorValue,
@@ -137,7 +136,7 @@ export default {
       let editorValue = this.$refs.smartEditor.value;
 
       this.editorValue = editorValue;
-    }
+    },
   },
   created(){
     database = firebase.database();
@@ -152,20 +151,26 @@ export default {
       userRef.once('value').then(function(snapshot){
         self.title = snapshot.val().title;
         self.link = snapshot.val().link;
-        self.text = snapshot.val().text;
+        // self.text = snapshot.val().text;
         self.thumbImg = snapshot.val().thumbImg;
         self.editorValue = snapshot.val().editorValue;
       });
+
     }
+
   },
   mounted(){
+    let self = this;
     nhn.husky.EZCreator.createInIFrame({
       oAppRef: oEditors,
       elPlaceHolder: "smartEditor",
       sSkinURI: "./smarteditor/SmartEditor2Skin.html",
-      fCreator: "createSEditor2"
+      fCreator: "createSEditor2",
+      fOnAppLoad(){
+		    oEditors.getById["smartEditor"].exec("PASTE_HTML", [self.editorValue]);
+      }
     });
-  },
+  }
 }
 </script>
 
@@ -183,7 +188,8 @@ export default {
 .write-post .form .btn-submit { float:right; width:160px; line-height:48px; background-color:#000; color:#fff; text-align:center; margin-top:20px;  }
 .write-post .form .btn-submit span { font-size:16px; }
 
-.upload-wrap .btn-wrap { width:200px; float:left; }
+.upload-wrap { margin-top:40px; } 
+.upload-wrap .btn-wrap { width:200px; float:left;  }
 .upload-wrap .img-wrap { width:400px; float:left; }
 .upload-wrap .btn-wrap label { display:inline-block; width:150px; text-align:center; line-height:44px; font-size:15px; background-color:#eee; color:#777; cursor:pointer; }
 .upload-wrap .btn-wrap input { opacity:0; }
