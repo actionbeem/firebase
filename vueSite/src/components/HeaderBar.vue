@@ -33,7 +33,7 @@ export default {
     },
     logOut(){
       firebase.auth().signOut().then(() => {
-        alert('log out')
+        alert('로그아웃 되셨습니다.')
         this.$store.commit('logOut')
         this.$router.push('/home')
       }).catch(function(error){
@@ -44,7 +44,7 @@ export default {
       if(this.$store.state.currentUser){
         this.$router.push('/write')
       }else{
-        alert('Please Login')
+        alert('로그인을 해주세요.')
         this.$router.push('/login')
       }
     }

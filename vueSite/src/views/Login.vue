@@ -28,9 +28,14 @@ export default {
   },
   methods: {
     signupSubmit(){
-      return firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then(()=> alert('회원가입 완료! 로그인 해주세요.'))
-        .catch(error=> { console.log(error)});
+      console.log(this.password.length)
+      if(this.password.length < 6) {
+        alert('비밀번호는 6자리 이상 입력하셔야 합니다.')
+      } else {
+        return firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          .then(()=> alert('회원가입 완료! 로그인 해주세요.'))
+          .catch(error=> { console.log(error)});
+      }
     },
     loginSubmit(){
       if (this.loginExceptionHandler()) return true;
@@ -38,7 +43,7 @@ export default {
       return firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .catch(error => {
           if (error.code === 'auth/wrong-password') {
-            alert('Wrong password.');
+            alert('비밀번호가 틀렸습니다.');
           } else {
             alert(error.message);
           }
