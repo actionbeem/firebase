@@ -141,20 +141,18 @@ export default {
   created(){
     database = firebase.database();
     userRef = database.ref('users/' + this.$store.state.currentUserUid )
-    console.log(userRef)
     userUid = this.$route.params.paramUid;
     userKey = this.$route.params.paramKey;
-    let self = this;
 
     if(userUid){
       this.editStatus = true;
       userRef = database.ref(`users/${userUid}/${userKey}`)
-      userRef.once('value').then(function(snapshot){
-        self.title = snapshot.val().title;
-        self.link = snapshot.val().link;
-        // self.text = snapshot.val().text;
-        self.thumbImg = snapshot.val().thumbImg;
-        self.editorValue = snapshot.val().editorValue;
+      userRef.once('value').then(snapshot => {
+        this.title = snapshot.val().title;
+        this.link = snapshot.val().link;
+        // this.text = snapshot.val().text;
+        this.thumbImg = snapshot.val().thumbImg;
+        this.editorValue = snapshot.val().editorValue;
       });
 
     }
@@ -171,6 +169,8 @@ export default {
 		    oEditors.getById["smartEditor"].exec("PASTE_HTML", [self.editorValue]);
       }
     });
+
+    
   }
 }
 </script>

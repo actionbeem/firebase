@@ -32,10 +32,9 @@ export default {
   },
   created(){
     const userDB = firebase.database().ref('/users');
-    const self = this;
-    userDB.on('value',function(snapshot){
+    userDB.on('value', snapshot => {
       let users = snapshot.val();
-      self.userDataList.push(users)
+      this.userDataList.push(users)
     })
   },
 }

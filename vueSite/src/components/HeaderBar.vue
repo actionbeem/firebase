@@ -32,11 +32,10 @@ export default {
       this.$router.push('/login')
     },
     logOut(){
-      let self = this;
-      firebase.auth().signOut().then(function(){
+      firebase.auth().signOut().then(() => {
         alert('log out')
-        self.$store.commit('logOut')
-        self.$router.push('/home')
+        this.$store.commit('logOut')
+        this.$router.push('/home')
       }).catch(function(error){
         alert(error)
       });
@@ -60,10 +59,10 @@ export default {
 .header .btn-login,
 .header .btn-logout,
 .header .btn-write  { display:inline-block; width:70px; line-height:27px;  border-radius:3px; cursor:pointer; margin-top:14px;}
-.header .btn-login  { color:#54c9ca; }
+.header .btn-login  { color:rgb(21, 65, 66); }
 .header .btn-logout { color:#bbb; } 
 .header .btn-write  { border:1px solid #ffb11c; background-color:#ffb11c; color:#fff; margin-left:10px;}
-.header .btn-login:hover { border-color:rgb(21, 65, 66); color:rgb(21, 65, 66); }
+/* .header .btn-login:hover { border-color:rgb(21, 65, 66); color:rgb(21, 65, 66); } */
 /* .header .btn-write:hover { border-color:#c78404; background-color:#c78404; } */
 .header .btn-write span,
 .header .btn-login span,

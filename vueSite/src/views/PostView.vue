@@ -50,10 +50,9 @@ export default {
     paramUid = this.$route.params.uid;
     paramKey = this.$route.params.key;
     userRef = database.ref(`users/${paramUid}/${paramKey}`)
-    let self = this;
 
-    userRef.on('value',function(snapshot){
-      self.onePost = snapshot.val();
+    userRef.on('value', snapshot => {
+      this.onePost = snapshot.val();
     })
 
     if( paramUid === this.$store.state.currentUserUid ) {

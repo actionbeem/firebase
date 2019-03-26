@@ -28,41 +28,39 @@ export default {
   },
   methods: {
     signupSubmit(){
-      return firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(function(){
-        alert('회원가입 완료! 로그인 해주세요.')
-      }).catch(function(){
-        console.log(error)
-      });
+      return firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        .then(()=> alert('회원가입 완료! 로그인 해주세요.'))
+        .catch(error=> { console.log(error)});
     },
     loginSubmit(){
-      var self = this;
       if (this.loginExceptionHandler()) return true;
 
-      return firebase.auth().signInWithEmailAndPassword(this.email, this.password).catch(function(error) {
-        if (error.code === 'auth/wrong-password') {
-          alert('Wrong password.');
-        } else {
-          alert(error.message);
-        }
-        console.log(error);
-      }).then(function (user) {
-        console.log(user, "has been logged");
-        self.$store.commit('setUserInfo', user)
-        self.$store.commit('setUserUid', user.user.uid )
-        self.clearForm();
-        self.$router.push({path : '/home'});
-      });
+      return firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .catch(error => {
+          if (error.code === 'auth/wrong-password') {
+            alert('Wrong password.');
+          } else {
+            alert(error.message);
+          }
+          console.log(error);
+        }).then(user => {
+          console.log(user, "has been logged");
+          this.$store.commit('setUserInfo', user)
+          this.$store.commit('setUserUid', user.user.uid )
+          this.clearForm();
+          this.$router.push({path : '/home'});
+        });
     },
     googleLogin(){      
       let auth = firebase.auth();
       let authProvider = new firebase.auth.GoogleAuthProvider();
       let self = this;
 
-      auth.signInWithPopup(authProvider).then(function(){
+      auth.signInWithPopup(authProvider).then(() => {
         self.$router.push('/home')
       })      
 
-      auth.onAuthStateChanged(function(user){
+      auth.onAuthStateChanged(user => {
         if(user){
           self.$store.commit('setUserInfo', user)
           self.$store.commit('setUserUid', user.uid )
@@ -85,7 +83,7 @@ export default {
     },
     writePost(){
       this.$router.push('/write')
-    }
+    },
   }
 }
 </script>
