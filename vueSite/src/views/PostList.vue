@@ -6,7 +6,7 @@
           <div class="inner">
             <div class="top clear">
               <span class="date">{{ post.writeDate }} </span>
-              <p class="like"><span class="icon"></span><span class="count">2</span></p>
+              <p class="like"><span class="icon" @click="likeToggle(key)"></span><span class="count">{{ post.likeCount }}</span></p>
             </div>
             <router-link v-bind:to="`/post/${uid}/${key}`">
               <!-- <p class="thumb"></p> -->
@@ -28,10 +28,31 @@ import "firebase/auth";
 import "firebase/database";
 import PostView from './PostView.vue'
 
+let database, userLikeRef;
+
 export default {
   data() {
     return {
       userDataList: [],
+    }
+  },
+  methods: {
+    likeToggle(key){
+      let likeTarget = database.ref('users/' + this.$store.state.currentUserUid + '/like/' + key)
+      let obj = {}
+
+      likeTarget.once('value').then(function(data){
+        let toggle = data.val();
+        if(toggle === null || toggle === false){
+          obj[key] = true
+        } else {
+          obj[key] = false
+        } 
+        return data
+      }).then(function(data){
+        console.log(obj)
+        userLikeRef.push(obj) 
+      })
     }
   },
   created(){
@@ -40,6 +61,9 @@ export default {
       let users = snapshot.val();
       this.userDataList.push(users)
     })
+
+    database = firebase.database();
+    userLikeRef = database.ref('users/' + this.$store.state.currentUserUid + '/like/' )
   },
 }
 </script>
@@ -52,6 +76,7 @@ export default {
 .post-list li .top .date { float:left; font-size:14px; color:#ccc; } 
 .post-list li .top .like { float:right; }
 .post-list li .top .like .icon { display:inline-block; width:15px; height:15px; border-radius:50%; background-color:#eee; vertical-align:top; cursor:pointer; }
+.post-list li .top .like .icon.active { background-color:salmon; }
 .post-list li .top .like .count { font-size:14px; color:#bbb; vertical-align: top; padding-top:3px; margin-left:6px; }
 .post-list li .thumb { height:180px; background-color:#333;} 
 .post-list li .thumbImg { width:100%; height:150px; } 

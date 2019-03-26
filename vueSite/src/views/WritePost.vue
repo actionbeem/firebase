@@ -53,7 +53,7 @@ import "firebase/auth";
 import "firebase/database";
 import $ from 'jquery'
 
-let database, userRef, userUid, userKey, today;
+let database, userPostRef, userLikeRef, userUid, userKey, today;
 let oEditors = [];
 
 export default {
@@ -65,6 +65,7 @@ export default {
       writeDate: "",
       thumbImg: "",
       editorValue: "",
+      likeCount: 0,
       editStatus: false,
     }
   },
@@ -90,13 +91,14 @@ export default {
     writePost(){
       this.getDate();
       this.getEditorValue();
-      userRef.push({
+      userPostRef.push({
         title: this.title,
         link: this.link,
         // text: this.text,
         writeDate: this.writeDate,
         thumbImg: this.thumbImg,
         editorValue: this.editorValue,
+        likeCount: this.likeCount,
       })
 
       this.$router.push('/home')
@@ -104,13 +106,14 @@ export default {
     editPost(){
       this.getDate();
       this.getEditorValue();
-      userRef.update({
+      userPostRef.update({
         title: this.title,
         link: this.link,
         // text: this.text,
         writeDate: this.writeDate,
         thumbImg: this.thumbImg,
         editorValue: this.editorValue,
+        likeCount: this.likeCount,
       })
 
       this.$router.push('/home')
@@ -140,14 +143,14 @@ export default {
   },
   created(){
     database = firebase.database();
-    userRef = database.ref('users/' + this.$store.state.currentUserUid )
+    userPostRef = database.ref('users/' + this.$store.state.currentUserUid + '/post/' )
+
     userUid = this.$route.params.paramUid;
     userKey = this.$route.params.paramKey;
-
     if(userUid){
       this.editStatus = true;
-      userRef = database.ref(`users/${userUid}/${userKey}`)
-      userRef.once('value').then(snapshot => {
+      userPostRef = database.ref(`users/${userUid}/${userKey}`)
+      userPostRef.once('value').then(snapshot => {
         this.title = snapshot.val().title;
         this.link = snapshot.val().link;
         // this.text = snapshot.val().text;
